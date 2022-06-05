@@ -8,8 +8,6 @@ import {
 const initialState = {
   userCategory: [],
   isLoading: false,
-  isError: false,
-  errorMessage: "",
   title: "",
   imageData: [],
   id: "",

@@ -6,6 +6,12 @@ import {
   FETCH_IMAGE,
 } from "./userType";
 const axios = require("axios");
+
+// Backend  Strapi
+// REACT_APP_URL="http://localhost:1337"
+//"http://localhost:1337/tests" CRUD operation for user data
+//"http://localhost:1337/upload" CRUD operation for image data
+
 const api = process.env.REACT_APP_URL;
 
 export const addUserCategory = (title, descriptions, formData) => {
