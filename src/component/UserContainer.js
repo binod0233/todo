@@ -1,50 +1,40 @@
-import React, { useEffect } from "react";
+import React, { Suspense, useEffect, lazy } from "react";
 import { useDispatch, useSelector } from "react-redux";
-
 import { fetchUserCategory, fetchImage, deleteUserCategory } from "../redux";
 
 import { Grid, Box } from "@mui/material";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
-import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
+const GetImage = lazy(() => import("./GetImage"));
 
 const UserContainer = () => {
   const dispatch = useDispatch();
   useEffect(() => {
     const interval = setInterval(() => {
       dispatch(fetchUserCategory());
-    }, 10000);
+    }, 1000);
     return () => clearInterval(interval);
   }, [dispatch]);
   useEffect(() => {
     const interval = setInterval(() => {
       dispatch(fetchImage());
-    }, 10000);
+    }, 1000);
     return () => clearInterval(interval);
   }, [dispatch]);
   const allUserCategory = useSelector((state) => state.user.userCategory);
-  const allImage = useSelector((state) => state.user.imageData);
   const userData = allUserCategory.map((item) => {
     return (
       <>
         <Grid item key={item._id}>
           <Card sx={{ maxWidth: 345 }}>
-            {allImage.map((item2) =>
-              item.imageId === item2._id ? (
-                <CardMedia
-                  component="img"
-                  height="140"
-                  image={"http://localhost:1337" + item2.url}
-                  alt="green iguana"
-                  key={item2._id}
-                />
-              ) : (
-                <></>
-              )
-            )}
+            {
+              <Suspense fallback={<div>Loading...</div>}>
+                <GetImage id={item.imageId} />
+              </Suspense>
+            }
 
             <CardContent>
               <Typography gutterBottom variant="h5" component="div">

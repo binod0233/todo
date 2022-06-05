@@ -6,18 +6,12 @@ import {
   FETCH_IMAGE,
 } from "./userType";
 const axios = require("axios");
-// const api = process.env.REACT_APP_URL;
-const api = "http://localhost:1337/tests/";
-const api2 = "http://localhost:1337/upload/files/";
-const api3 = "http://localhost:1337/upload/";
+const api = process.env.REACT_APP_URL;
 
 export const addUserCategory = (title, descriptions, formData) => {
-  console.log(title, descriptions, formData);
-
   if (formData === "empty") {
     var OPTION = {
-      url: `${api}`,
-
+      url: `${api}/tests/`,
       method: "POST",
       data: { title, descriptions },
       headers: {
@@ -34,11 +28,11 @@ export const addUserCategory = (title, descriptions, formData) => {
       type: ADD_USERCATEGORY,
     };
   } else {
-    axios.post(`${api3}`, formData).then((res) => {
+    axios.post(`${api}/upload/`, formData).then((res) => {
       const imageId = res.data[0].id;
       console.log(res);
       var OPTION = {
-        url: `${api}`,
+        url: `${api}/tests/`,
 
         method: "POST",
         data: { title, descriptions, imageId },
@@ -62,7 +56,7 @@ export const addUserCategory = (title, descriptions, formData) => {
 export const fetchUserCategory = () => {
   return function (dispatch) {
     var OPTION = {
-      url: `${api}`,
+      url: `${api}/tests/`,
 
       method: "GET",
       headers: {
@@ -90,7 +84,7 @@ export const getUserCategory = (userCategory) => {
 export const fetchImage = () => {
   return function (dispatch) {
     var OPTION = {
-      url: `${api2}`,
+      url: `${api}/upload/files/`,
 
       method: "GET",
       headers: {
@@ -117,7 +111,7 @@ export const getImage = (imageData) => {
 
 export const deleteUserCategory = (id, imageId) => {
   var OPTION = {
-    url: `${api}` + id,
+    url: `${api}/tests/` + id,
     method: "DELETE",
     data: { id },
     headers: {
@@ -133,7 +127,7 @@ export const deleteUserCategory = (id, imageId) => {
     });
   console.log(id);
   var OPTION2 = {
-    url: `${api2}` + imageId,
+    url: `${api}/upload/files/` + imageId,
     method: "DELETE",
     data: { id },
     headers: {
@@ -163,7 +157,7 @@ export const updateUserCategory = (
 ) => {
   if (formData === "empty") {
     var OPTION = {
-      url: `${api}` + id,
+      url: `${api}/tests/` + id,
 
       method: "PUT",
       data: { title, descriptions, imageId },
@@ -179,11 +173,11 @@ export const updateUserCategory = (
         console.log(err);
       });
   } else {
-    axios.post(`${api3}`, formData).then((res) => {
+    axios.post(`${api}/upload/`, formData).then((res) => {
       const iId = res.data[0].id;
       console.log(res);
       var OPTION = {
-        url: `${api}` + id,
+        url: `${api}/tests/` + id,
 
         method: "PUT",
         data: { title, descriptions, imageId: iId },
@@ -200,7 +194,7 @@ export const updateUserCategory = (
         });
     });
     var OPTION2 = {
-      url: `${api2}` + imageId,
+      url: `${api}/upload/files/` + imageId,
       method: "DELETE",
       data: { id },
       headers: {

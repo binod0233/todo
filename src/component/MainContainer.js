@@ -1,25 +1,22 @@
-import React, { Suspense, lazy, useState } from "react";
-import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
-// import FormContainer from "./FormContainer";
+import React, { Suspense, lazy } from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import FormContainer from "./FormContainer";
 import queryString from "query-string";
-// const UserContainer = lazy(() => import("./UserContainer"));
-import UserContainer from "./UserContainer";
-const FormContainer = lazy(() => import("./FormContainer"));
+const UserContainer = lazy(() => import("./UserContainer"));
 const MainContainer = () => {
   const queryParams = queryString.parse(window.location.search);
   var values = { id: queryParams.id, imageId: queryParams.imageId };
-  console.log("queryParams", values);
   if (values.id === undefined) {
     var callContainer = (
       <div>
-        <Suspense fallback={<div>Loading...</div>}>
-          <FormContainer data={values} />
-        </Suspense>
+        <FormContainer data={values} />
 
         <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<UserContainer />} />
-          </Routes>
+          <Suspense fallback={<div>Loading...</div>}>
+            <Routes>
+              <Route path="/" element={<UserContainer />} />
+            </Routes>
+          </Suspense>
         </BrowserRouter>
       </div>
     );
@@ -31,6 +28,9 @@ const MainContainer = () => {
             <Route path="/upload" element={<FormContainer data={values} />} />
           </Routes>
         </BrowserRouter>
+        <br />
+        <br />
+
         <a href="/">Home</a>
       </>
     );

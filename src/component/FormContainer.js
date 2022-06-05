@@ -1,15 +1,9 @@
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import { Formik, Field, Form, ErrorMessage } from "formik";
-import {
-  addUserCategory,
-  fetchUserCategory,
-  updateUserCategory,
-} from "../redux";
+import { addUserCategory, updateUserCategory } from "../redux";
 import * as Yup from "yup";
-
-// import Paper from "@mui/material/Paper";
-import { Button, Typography, Grid, TextField, Paper } from "@mui/material";
+import { Button, Typography, Grid, Paper } from "@mui/material";
 
 const ToDoSchema = Yup.object().shape({
   title: Yup.string().required("Required"),
@@ -21,15 +15,8 @@ const ToDoSchema = Yup.object().shape({
 const FormContainer = (props) => {
   const { id, imageId } = props.data;
   const [files, setFiles] = useState();
+  const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
-  useEffect(() => {
-    const interval = setInterval(() => {
-      dispatch(fetchUserCategory());
-    }, 100000000);
-    return () => clearInterval(interval);
-  }, [dispatch]);
-
-  console.log("title", props.data);
 
   return (
     <div>
@@ -50,7 +37,6 @@ const FormContainer = (props) => {
             resetForm({ values: "" });
 
             if (files === undefined) {
-              console.log("prooooooops data", props.data);
               if (id !== undefined) {
                 dispatch(
                   updateUserCategory(
@@ -61,6 +47,7 @@ const FormContainer = (props) => {
                     "empty"
                   )
                 );
+                window.location.assign("/");
               } else {
                 dispatch(
                   addUserCategory(values.title, values.description, "empty")
@@ -85,8 +72,8 @@ const FormContainer = (props) => {
                 dispatch(
                   addUserCategory(values.title, values.description, formData)
                 );
-                setSubmitting(false);
               }
+              setSubmitting(false);
             }
           }}
           render={({ isSubmitting }) => (
